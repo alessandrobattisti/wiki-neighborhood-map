@@ -31,7 +31,7 @@ When you have finished searching for new places you can export all **"my places"
 Icons come from https://materialdesignicons.com
 
 ## Important
-This repository uses [Google Map](https://www.mapbox.com/). You need to replace `<your MAPBOX API KEY HERE>` in `src/keys.js` file with a token from [Google](https://developers.google.com/maps/documentation/javascript/get-api-key/).
+This repository uses [Google Map](https://developers.google.com/). You need to replace `<your MAPBOX API KEY HERE>` in `src/keys.js` file with a token from [Google](https://developers.google.com/maps/documentation/javascript/get-api-key/).
 
 ## Create React App
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
