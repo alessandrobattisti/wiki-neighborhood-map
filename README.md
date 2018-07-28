@@ -27,7 +27,7 @@ When you have finished searching for new places you can export all **"my places"
 4. Start the development server with `npm start`
 3. With your server running, visit the site: `http://localhost:3000/`.
 4. Or you can build the project using `npm run build`
-5. `cd` in build folder and run a server like `python3 -m http.server 8000` then visit `http://localhost:8000`
+5. `cd` in `build` folder and run a server like `python3 -m http.server 8000` then visit `http://localhost:8000`
 
 ## Icons
 Icons come from https://materialdesignicons.com

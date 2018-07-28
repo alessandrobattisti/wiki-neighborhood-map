@@ -151,6 +151,7 @@ class Map extends React.Component {
     this.state.info_window.close();
   }
 
+  /*Open info window and make API request*/
   open_info_window(type, marker){
     this.close_info_window()
     //set active in sidebar list and in callback scroll to that active <li>
@@ -215,6 +216,7 @@ class Map extends React.Component {
     }
   }
 
+  /* delete a marker form the map and my places array by id */
   delete_marker(id){
     this.setState(function(prevState){
       prevState.markers = prevState.markers.filter(loc => loc.id !== id)
@@ -229,6 +231,7 @@ class Map extends React.Component {
       return prevState
     }, this.remove_filter())
   }
+
   /* Remove every filter. Each marker will be visible.
   *  Close info windows and remove active class from sidebar list.
   */
@@ -253,6 +256,7 @@ class Map extends React.Component {
     );
   }
 
+  /* select corresponding place when sidebar is clicked */
   click_filter(id, title){
     this.close_info_window()
     this.select_icon("locations",id)
@@ -260,6 +264,7 @@ class Map extends React.Component {
     this.state.map.panTo(this.get_marker_by_id('locations',id).getPosition())
   }
 
+  /* filter my places using input form */
   form_filter(e){
     this.close_info_window()
     const m = new RegExp(e.target.value, 'i')
@@ -278,10 +283,13 @@ class Map extends React.Component {
       return prevState
     }, ()=>{ this.fit_to_visible_markers() })
   }
+
   get_wiki_lang(){
     const lang = document.getElementById('wiki-lang-select')
     return lang.options[lang.selectedIndex].value
   }
+
+  /* get data to search for (lang and bounding box) and search using wikipedia API */
   searchWikipedia(e){
     e.preventDefault()
     document.querySelector('.search-results').style.display = 'block'
@@ -309,6 +317,7 @@ class Map extends React.Component {
     	"gslimit": "50"
     }
 
+    // Download data from wikipedia
     fetch_wiki(form, lang)
       .then(function(res){
         if(res.query.geosearch.length > 0){
@@ -332,9 +341,9 @@ class Map extends React.Component {
     this.setState({'results_locations':[]})
   }
 
+  /* save results from wikipedia API to a search results arrays */
   update_results(res){
     this.empty_results();
-
     let results_locations = [];
     let search_results = [];
     let filtered_results = [];
@@ -349,14 +358,13 @@ class Map extends React.Component {
         results_locations.push(marker)
       }
     }.bind(this))
-
     this.setState({results_locations:results_locations, search_results:search_results, filtered_results:filtered_results})
-
   }
+
+  /* delete all search results and hide them in the sidebar */
   empty_search_results(){
     document.querySelector('.search-results').style.display = 'none'
     this.setState(prevState => {
-
       prevState.results_locations.map(loc=>loc.setMap(null))
       prevState.results_locations = []
       prevState.search_results = []
@@ -364,6 +372,8 @@ class Map extends React.Component {
       return prevState
     })
   }
+
+  /* select search results when sidebar is clicked */
   click_res_filter(id, title){
     this.close_info_window()
     this.select_icon("wiki", id)
@@ -371,6 +381,7 @@ class Map extends React.Component {
     this.state.map.panTo(this.get_marker_by_id('wiki',id).getPosition())
   }
 
+  /* filter search results using input form */
   res_form_filter(e){
     this.select_icon('wiki','')
     this.close_info_window()
@@ -392,7 +403,6 @@ class Map extends React.Component {
       document.querySelectorAll('.sidebar-el').forEach(function(el){
         el.classList.remove("active")
       });
-
     })
   }
 
@@ -407,7 +417,7 @@ class Map extends React.Component {
     }else{
       this.setState(prevState => {
         //create marker and save in my places arrays
-        let copy_loc = Object.assign({}, loc);
+        let copy_loc = Object.assign({}, loc); //copy obj to a new one
         copy_loc.id = "w_" + copy_loc.id
         const loc2 = this.create_marker(copy_loc, "locations")
         prevState.locations.push(loc2)
