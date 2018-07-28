@@ -26,12 +26,14 @@ When you have finished searching for new places you can export all **"my places"
 3. Install all project dependencies with `npm install`
 4. Start the development server with `npm start`
 3. With your server running, visit the site: `http://localhost:3000/`.
+4. Or you can build the project using `npm run build`
+5. `cd` in build folder and run a server like `python3 -m http.server 8000` then visit `http://localhost:8000`
 
 ## Icons
 Icons come from https://materialdesignicons.com
 
 ## Important
-This repository uses [Google Map](https://developers.google.com/). You need to replace `<your MAPBOX API KEY HERE>` in `src/keys.js` file with a token from [Google](https://developers.google.com/maps/documentation/javascript/get-api-key/).
+This repository uses [Google Map](https://developers.google.com/). You need to replace `<your GOOGLE API KEY HERE>` in `src/keys.js` file with a token from [Google](https://developers.google.com/maps/documentation/javascript/get-api-key/).
 
 ## Create React App
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).

@@ -1,5 +1,5 @@
 import React from 'react';
-import {loadJS} from './../utils.js'
+import {loadJS, displayError} from './../utils/utils.js'
 import {SideBar} from './Sidebar'
 import {JsonExport} from './JsonExport'
 import {google_key} from './../keys'
@@ -48,8 +48,10 @@ class Map extends React.Component {
      scaledSize: new window.google.maps.Size(t[type].size, t[type].size), // scaled size
    };
  }
- fitBoundsToVisibleMarkers() {
-     if(this.state.locations.length>1){
+
+ /*fit map to visibile markers*/
+ fit_to_visible_markers() {
+     if(this.state.filtered_markers.length>1){
        var bounds = new window.google.maps.LatLngBounds();
        this.state.locations.forEach(function(marker){
          if(marker.getVisible()) {
@@ -59,7 +61,8 @@ class Map extends React.Component {
        this.state.map.fitBounds(bounds);
      }
  }
- /*create a marker add to map and add a click event listener*/
+
+ /*create markers add them to map then add a click event listener*/
  create_marker(location, type){
    const marker = new window.google.maps.Marker({
        map: this.state.map,
@@ -75,7 +78,6 @@ class Map extends React.Component {
    }.bind(this));
    return marker
  }
-
 
  /*init google map and add markers to arrays in state*/
  initMap() {
@@ -102,11 +104,10 @@ class Map extends React.Component {
       "locations": locations,
       "filtered_markers": filtered_markers,
       "markers": markers
-    }, ()=>{this.fitBoundsToVisibleMarkers()});
+    }, ()=>{this.fit_to_visible_markers()});
   }
 
   select_icon(type, id){
-    console.log(type,id)
     let this_type_locations = "locations"
     let other_type_locations = "results_locations"
     let selected_marker = this.createIcon("locations_sel")
@@ -157,12 +158,16 @@ class Map extends React.Component {
       const sidebar_bottom = document.querySelector('#sidebar').getBoundingClientRect().bottom
       const hedear_height = document.querySelector('header').getBoundingClientRect().bottom
       const sidebar_scrolltop = document.querySelector('#sidebar').scrollTop
-      const active_top = document.querySelector('.active').offsetTop
+      let active_top = document.querySelector('.active')
+      if(active_top){
+        active_top = active_top.offsetTop
+      }else{
+        active_top = 0
+      }
       if(sidebar_bottom + sidebar_scrolltop - hedear_height < active_top || sidebar_scrolltop > active_top){
         document.querySelector('#sidebar').scrollTop = active_top
       }
     })
-    console.log(type, 's', marker.id)
     this.select_icon(type, marker.id)
     this.setState({
       info_window: new window.google.maps.InfoWindow({
@@ -188,6 +193,7 @@ class Map extends React.Component {
           document.querySelectorAll('#infowindow-text a').forEach(function(a){a.removeAttribute("href")})
         })
         .catch(function(err){
+          displayError("We were unable to download data from wikipedia api. Check developer console for more information.")
           console.log(err)
         })
       })
@@ -238,7 +244,7 @@ class Map extends React.Component {
     }, () => {
         //this needs to be in a callback of setState since we have to update sytles
         //after render() has finished updating the UI
-        this.fitBoundsToVisibleMarkers()
+        this.fit_to_visible_markers()
         this.close_info_window()
         document.querySelectorAll('.sidebar-el').forEach(function(el){
           el.classList.remove("active")
@@ -264,12 +270,13 @@ class Map extends React.Component {
           if(location.title.match(m)){
             return location
           }else{
-            return location.setVisible(false)
+            location.setVisible(false)
+            return location
           }}
       );
       prevState.filtered_markers = prevState.markers.filter(location => location.title.match(m)) ;
       return prevState
-    }, ()=>{this.fitBoundsToVisibleMarkers()})
+    }, ()=>{ this.fit_to_visible_markers() })
   }
   get_wiki_lang(){
     const lang = document.getElementById('wiki-lang-select')
@@ -309,6 +316,11 @@ class Map extends React.Component {
         }
         this.update_results(res.query.geosearch)
       }.bind(this) )
+      .catch(function(err){
+        displayError("We were unable to download data from wikipedia api. Check developer console for more information.")
+        document.querySelector('#searching').style.display = "none"
+        document.querySelector('.search-results').style.display = "none"
+      })
   }
 
   empty_results(){
@@ -327,7 +339,6 @@ class Map extends React.Component {
     let search_results = [];
     let filtered_results = [];
     const locations_id = this.state.locations.map(loc => loc.id)
-    console.log(locations_id)
     res.forEach(function(location){
       if(!locations_id.includes('w_'+location.pageid)){
         search_results.push( {id: location.pageid, title: location.title, lang: this.get_wiki_lang(), lat:location.lat, lon:location.lon} )
@@ -385,15 +396,17 @@ class Map extends React.Component {
     })
   }
 
+  /* Save a place to myplaces, then remove it from search results */
   save_new_place(id){
     let loc = this.state.search_results.filter(l => l.id === id)[0]
     const locations_id = this.state.locations.map(loc => loc.id)
     this.close_info_window()
 
     if(locations_id.includes("w_"+loc.id)){
-      alert('This place is in your places already!')
+      displayError('This place is already in <b>my places</b>!')
     }else{
       this.setState(prevState => {
+        //create marker and save in my places arrays
         let copy_loc = Object.assign({}, loc);
         copy_loc.id = "w_" + copy_loc.id
         const loc2 = this.create_marker(copy_loc, "locations")
@@ -407,8 +420,7 @@ class Map extends React.Component {
         }
         prevState.markers.push(loc)
         prevState.filtered_markers.push(loc)
-        console.log(loc2.id, id)
-        //remove saved marker from search results markers
+        //remove saved marker from search results arrays
         prevState.search_results = prevState.search_results.filter(loc => loc.id !== id)
         prevState.results_locations = prevState.results_locations.filter(loc => {
           if(loc.id === id){
@@ -422,14 +434,14 @@ class Map extends React.Component {
       })
     }
   }
+
+  /* Save json information of current "my places" to json section */
   export_json(){
     const el = document.getElementById('json-sec')
-    console.log(el, this.state.markers)
     el.innerHTML = JSON.stringify(this.state.markers);
-    console.log(JSON.stringify(this.state.markers))
   }
-  render() {
 
+  render() {
     return (
       <div className="container">
         <SideBar
@@ -473,16 +485,3 @@ class Map extends React.Component {
 }
 
 export {Map}
-
-
-//loadJson()
-//  .then(function(json){
-//    this.setState({
-//      info_window: new window.google.maps.InfoWindow({
-//        content: marker.title + " hello! " + json.desc
-//      })
-//    })
-//    this.state.info_window.open(this.state.map, marker)
-//  }.bind(this))
-//  .catch(err => console.log(err))
-//}

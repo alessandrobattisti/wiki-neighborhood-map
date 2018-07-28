@@ -10,7 +10,7 @@ function loadJS(src) {
 }
 
 
-var loadJson = function(url){
+function loadJson(url){
   return new Promise(function(resolve, reject) {
     fetch('/desc.json')
     .then(
@@ -32,5 +32,11 @@ var loadJson = function(url){
   });
 }
 
+function displayError(message){
+  const modal = document.getElementById('modal');
+  modal.style.display = 'block';
+  const error_box = document.getElementById('error-message-text');
+  error_box.innerHTML = message;
+}
 
-export {loadJS, loadJson}
+export {loadJS, loadJson, displayError}

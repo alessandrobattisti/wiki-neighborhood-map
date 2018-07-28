@@ -16,13 +16,13 @@ class SideBar_n extends React.Component {
       <section id="sidebar" className="sidebar">
         <div className="my-places">
           {this.props.location.pathname==='/' &&
-          <Link to="/json" id="json-link" >Json</Link>
+          <Link to="/json" id="json-link"  title="export to json" aria-label="export to json">Json</Link>
           }
           {this.props.location.pathname==='/json' &&
-          <Link to="/" id="json-link" >Map</Link>
+          <Link to="/" id="json-link" title="Back to map" aria-label="Back to map">Map</Link>
           }
           {this.props.location.pathname==='/info' &&
-          <Link to="/" id="json-link" >Map</Link>
+          <Link to="/" id="json-link" title="Back to map" aria-label="Back to map">Map</Link>
           }
 
           <h2>My Places</h2>

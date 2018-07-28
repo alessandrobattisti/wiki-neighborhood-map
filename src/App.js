@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Container} from './components/Container'
 import './App.css';
+import './materialdesignicons.css';
 import { Link } from 'react-router-dom'
 
 class App extends Component {

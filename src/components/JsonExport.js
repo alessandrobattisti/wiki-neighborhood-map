@@ -31,7 +31,7 @@ class JsonExport extends React.Component {
     return (
 
       <section id="json-sec">
-        <Link to="/" id="back-to-map"> <span className="mdi mdi-arrow-left mdi-18px"></span> <span>Back to map</span></Link>
+        <Link to="/" id="back-to-map" title="Back to map"> <span className="mdi mdi-arrow-left mdi-18px"></span> <span>Back to map</span></Link>
         <h2>Json</h2>
         <pre id="code"></pre>
       </section>

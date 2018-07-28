@@ -1,4 +1,4 @@
-[
+const locations =[
     {
         "title": "Portrait of the Four Tetrarchs",
         "url": "https://en.wikipedia.org/wiki/Portrait_of_the_Four_Tetrarchs",
@@ -62,5 +62,14 @@
         "lon": 12.3377,
         "pageid": "47286469",
         "lang": "en"
+    },
+    {
+        "title": "Bridge of Sighs",
+        "url": "https://en.wikipedia.org/wiki/Bridge_of_Sighs",
+        "lat": 45.434055555556,
+        "lon": 12.340888888889,
+        "pageid": "142660",
+        "lang": "en"
     }
 ]
+export {locations}
