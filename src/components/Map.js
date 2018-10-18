@@ -180,22 +180,22 @@ class Map extends React.Component {
               Get more info
             </button>
           </div>`
-
       })
     }, ()=>{
       this.state.info_window.open(this.state.map, marker)
-
-      const button = document.getElementById('get-more-info')
-      button.addEventListener('click', function(e){
-        fetch_det_wiki(e.target.getAttribute("data-id"), e.target.getAttribute("data-lang"))
-        .then(function(data){
-          let test = document.getElementById("infowindow-text")
-          test.innerHTML = data.parse.text['*']
-          document.querySelectorAll('#infowindow-text a').forEach(function(a){a.removeAttribute("href")})
-        })
-        .catch(function(err){
-          displayError("We were unable to download data from wikipedia api. Check developer console for more information.")
-          console.log(err)
+      window.google.maps.event.addListener(this.state.info_window, 'domready', function(){
+        const button = document.getElementById('get-more-info')
+        button.addEventListener('click', function(e){
+          fetch_det_wiki(e.target.getAttribute("data-id"), e.target.getAttribute("data-lang"))
+          .then(function(data){
+            let test = document.getElementById("infowindow-text")
+            test.innerHTML = data.parse.text['*']
+            document.querySelectorAll('#infowindow-text a').forEach(function(a){a.removeAttribute("href")})
+          })
+          .catch(function(err){
+            displayError("We were unable to download data from wikipedia api. Check developer console for more information.")
+            console.log(err)
+          })
         })
       })
     })
