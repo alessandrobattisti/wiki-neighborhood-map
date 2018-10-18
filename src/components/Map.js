@@ -262,6 +262,7 @@ class Map extends React.Component {
     this.select_icon("locations",id)
     this.open_info_window("locations",this.get_marker_by_id('locations',id))
     this.state.map.panTo(this.get_marker_by_id('locations',id).getPosition())
+    this.state.map.setZoom(17);
   }
 
   /* filter my places using input form */
@@ -379,6 +380,7 @@ class Map extends React.Component {
     this.select_icon("wiki", id)
     this.open_info_window("wiki",this.get_marker_by_id('wiki',id))
     this.state.map.panTo(this.get_marker_by_id('wiki',id).getPosition())
+    this.state.map.setZoom(17);
   }
 
   /* filter search results using input form */

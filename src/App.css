@@ -307,7 +307,6 @@ input:focus, select:focus{
   width: 100%;
   float: left;
 }
-
 /* =========================================================================== */
 /* =================================== MAP =================================== */
 /* =========================================================================== */
@@ -501,6 +500,7 @@ pre {
 /* =========================================================================== */
 /* ================================= HELP PAGE =============================== */
 /* =========================================================================== */
+
 #help-page{
   margin-left: 300px;
   width: calc(100% - 300px);
@@ -528,4 +528,81 @@ pre {
   margin-top:20px;
   text-align: left;
   font-size: 18px;
+}
+
+/* =========================================================================== */
+/* ============================ SIDEBAR MEDIA QUERY ========================== */
+/* =========================================================================== */
+
+@media (max-width: 400px) {
+  .sidebar-list > li {
+      font-size: 14px;
+  }
+  .mdi-map-marker{
+    display: none;
+  }
+  .sidebar {
+    width: 175px;
+  }
+  .sidebar-close {
+    left: -175px;
+  }
+  #filter-form, #filter-form2 {
+    width: 95px !important;
+  }
+  .search-form{
+    float: left;
+    width: 103px !important;
+  }
+  .map-container {
+    margin-left: 175px;
+    width: calc(100% - 175px);
+  }
+  .map-container-full {
+    margin-left: 0px;
+    width: 100%;
+  }
+  #json-sec{
+    margin-left: 175px;
+    width: calc(100% - 175px);
+  }
+  #help-page{
+    margin-left: 175px;
+    width: calc(100% - 175px);
+  }
+}
+
+@media (min-width: 401px) and (max-width: 576px) {
+  .sidebar-list > li {
+      font-size: 15px;
+  }
+  .sidebar {
+    width: 225px;
+  }
+  .sidebar-close {
+    left: -225px;
+  }
+  #filter-form, #filter-form2 {
+    width: 145px !important;
+  }
+  .search-form{
+    float: left;
+    width: 153px !important;
+  }
+  .map-container {
+    margin-left: 225px;
+    width: calc(100% - 225px);
+  }
+  .map-container-full {
+    margin-left: 0px;
+    width: 100%;
+  }
+  #json-sec{
+    margin-left: 225px;
+    width: calc(100% - 225px);
+  }
+  #help-page{
+    margin-left: 225px;
+    width: calc(100% - 225px);
+  }
 }

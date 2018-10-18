@@ -32,6 +32,9 @@ When you have finished searching for new places you can export all **"my places"
 ## Icons
 Icons come from https://materialdesignicons.com
 
+## Live
+A live version of this webapp, without service worker (no SSL) can be accessed [here](http://alebat.atwebpages.com/).
+
 ## Important
 This repository uses [Google Map](https://developers.google.com/). You need to replace `<your GOOGLE API KEY HERE>` in `src/keys.js` file with a token from [Google](https://developers.google.com/maps/documentation/javascript/get-api-key/).
 
